@@ -12,8 +12,8 @@ public class PrefixSum {
         long endTime = System.currentTimeMillis(); // Bitiş zamanını al
         long duration = endTime - startTime; // İşlem süresini hesapla
         
-        //System.out.println("Array: " + Arrays.toString(array));
-        //System.out.println("Prefix Sum: " + Arrays.toString(prefixSum));
+        // System.out.println("Array: " + Arrays.toString(array));
+        // System.out.println("Prefix Sum: " + Arrays.toString(prefixSum));
         System.out.println("Gecen sure " + duration + " milisaniye."); // Süreyi ekrana yazdır
     }
     

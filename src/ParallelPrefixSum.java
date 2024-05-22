@@ -3,7 +3,7 @@ import java.util.concurrent.RecursiveAction;
 import java.util.concurrent.ForkJoinPool;
 
 class PrefixSumTask extends RecursiveAction {
-    private static final int THRESHOLD = 1000; // Eşik değeri
+    private static final int THRESHOLD = 50000000; // Eşik değeri
     private int[] array;
     private int start;
     private int end;
@@ -19,10 +19,16 @@ class PrefixSumTask extends RecursiveAction {
         if (end - start <= THRESHOLD) {
             calculatePrefixSum();
         } else {
-            int mid = start + (end - start) / 2;
-            PrefixSumTask leftTask = new PrefixSumTask(array, start, mid);
-            PrefixSumTask rightTask = new PrefixSumTask(array, mid, end);
-            invokeAll(leftTask, rightTask);
+            int step = (end - start) / 10;
+            PrefixSumTask[] tasks = new PrefixSumTask[10];
+        
+            for (int i = 0; i < 9; i++) {
+                tasks[i] = new PrefixSumTask(array, start + i * step, start + (i + 1) * step);
+            }
+
+        tasks[9] = new PrefixSumTask(array, start + 9 * step, end);
+
+        invokeAll(tasks);
         }
     }
 
@@ -36,7 +42,7 @@ class PrefixSumTask extends RecursiveAction {
 public class ParallelPrefixSum {
     public static void main(String[] args) {
         int[] array = generateRandomArray(100000000, 9); // 100000000 elemanlı 0-9 arası rastgele dizi
-        //System.out.println("Array: " + java.util.Arrays.toString(array));
+        // System.out.println("Array: " + java.util.Arrays.toString(array));
 
         long startTime = System.currentTimeMillis();
 
@@ -47,7 +53,7 @@ public class ParallelPrefixSum {
         long endTime = System.currentTimeMillis();
         long elapsedTime = endTime - startTime;
 
-        //System.out.println("Prefix Sum: " + java.util.Arrays.toString(array));
+        // System.out.println("Prefix Sum: " + java.util.Arrays.toString(array));
         System.out.println("Gecen sure " + elapsedTime + " milisaniye.");
     }
 
